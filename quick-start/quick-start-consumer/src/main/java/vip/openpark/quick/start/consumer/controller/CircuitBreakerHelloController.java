@@ -15,7 +15,7 @@ import vip.openpark.resilience4j.api.IHelloService;
  */
 @Slf4j
 @RestController
-public class HelloController {
+public class CircuitBreakerHelloController {
 	@Resource
 	private IHelloService helloService;
 
@@ -28,9 +28,9 @@ public class HelloController {
 	 * @param id Long
 	 * @return String
 	 */
-	@GetMapping("circuitbreakerHello/{id}")
-	@CircuitBreaker(name = "quick-start-provider", fallbackMethod = "helloFallback")
-	public String circuitbreakerHello(@PathVariable(name = "id", required = false) Long id) {
+	@GetMapping("hello4CircuitBreaker/{id}")
+	@CircuitBreaker(name = "quick-start-provider", fallbackMethod = "fallback4CircuitBreaker")
+	public String hello4CircuitBreaker(@PathVariable(name = "id", required = false) Long id) {
 		return helloService.hello(id);
 	}
 
@@ -41,7 +41,7 @@ public class HelloController {
 	 * @param e  Throwable
 	 * @return 熔断后的返回值
 	 */
-	private String circuitbreakerHelloFallback(Long id, Throwable e) {
+	private String fallback4CircuitBreaker(Long id, Throwable e) {
 		log.error("熔断请求参数：{}，异常信息:{}", id, e.getMessage());
 		return "hello circuitbreakerHello";
 	}
